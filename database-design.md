@@ -2,7 +2,44 @@
 
 ### Database Schema Design for Supabase (PostgreSQL)
 
-Based on the requirements to store business information, services, appointments, and clients, I've designed the following database schema that follows normalization principles and best practices for PostgreSQL/Supabase.
+Based on the requirements to store business information, services, appointments, and clients,
+I've designed the following database schema that follows normalization principles and best 
+practices for PostgreSQL/Supabase.
+
+
+## Database Design Using AI Assistant:
+
+### Prompt for database design:
+Req: Claude AI 3.7 Sonnet Model
+Why?
+Identifying tables related to the defined database
+
+### The prompt must follow the 5 define effective prompt engineering principles
+based on the Effective Prompt Engineering for Generative AI book
+
+I'm building a small business appointment scheduler and need help designing a database model. I've already created a frontend and now need to design tables for Supabase (which is PostgreSQL-based).
+
+My application needs to store:
+1. Business information (name, address, contact info, hours)
+2. Services offered (name, duration, price, description)
+3. Appointments (date, time, service, client, status)
+4. Clients (name, contact info, notes)
+
+Based on pages 47-58 of "Database Design for Mere Mortals," please help me:
+1. Identify the correct tables needed
+2. Define proper fields for each table with appropriate data types
+3. Establish relationships between tables (primary/foreign keys)
+4. Apply normalization principles to avoid redundancy
+5. Consider indexing for performance
+6. Add any additional tables or fields that would be valuable
+
+Please explain your reasoning for key decisions and any best practices I should follow.
+
+
+### Response:
+
+1. Generated the 10 tables with their relationships, 1:M, 1:1, or M:M
+
 
 ## 1. Tables and Fields
 
@@ -183,6 +220,45 @@ CREATE TABLE appointment_reminders (
 
 CREATE INDEX idx_appointment_reminders_appointment_id ON appointment_reminders(appointment_id);
 CREATE INDEX idx_appointment_reminders_scheduled_time ON appointment_reminders(scheduled_time);
+
+-- Special Business Hours 
+CREATE TABLE special_business_hours (
+                                       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                                       business_id UUID NOT NULL REFERENCES businesses(id) ON DELETE CASCADE,
+                                       date DATE NOT NULL,
+                                       is_closed BOOLEAN DEFAULT FALSE,
+                                       open_time TIME,
+                                       close_time TIME,
+                                       description VARCHAR(255),
+                                       created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+                                       updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+                                       UNIQUE (business_id, date)
+);
+
+
+--Payment Information 
+CREATE TABLE payments (
+                         id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                         appointment_id UUID NOT NULL REFERENCES appointments(id) ON DELETE CASCADE,
+                         amount DECIMAL(10, 2) NOT NULL,
+                         payment_method VARCHAR(50) NOT NULL,
+                         payment_status VARCHAR(20) NOT NULL DEFAULT 'pending',
+                         transaction_id VARCHAR(100),
+                         payment_date TIMESTAMP WITH TIME ZONE,
+                         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+                         updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+
+-- Client Notes or History
+CREATE TABLE client_notes (
+                             id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                             client_id UUID NOT NULL REFERENCES clients(id) ON DELETE CASCADE,
+                             staff_id UUID REFERENCES staff(id) ON DELETE SET NULL,
+                             note_text TEXT NOT NULL,
+                             created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 ```
 
 ## 2. Relationships Explanation
