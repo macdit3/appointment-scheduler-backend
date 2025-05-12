@@ -61,7 +61,7 @@ def update_business(business_id: int, business: BusinessUpdate):
     if not response.data:
         raise HTTPException(status_code=404, detail="Business not found")
     return response.data[0]
-
+# add route
 @app.delete("/businesses/{business_id}")
 def delete_business(business_id: int):
     response = supabase.table("businesses").delete().eq("id", business_id).execute()
