@@ -1,3 +1,4 @@
+from dns.dnssec import allow_all_policy
 from fastapi import FastAPI, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware  # Import CORS middleware
 from typing import List, Optional
@@ -26,23 +27,11 @@ from models import (
 
 app = FastAPI(title="Appointment Scheduler API")
 
-# Configure CORS
-origins = [
-    "http://localhost",
-    "http://localhost:3000",  # Common React development port
-    "http://localhost:8000",
-    "http://localhost:5173",  # Vite default port
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:5173",
-    # Add your production frontend URLs here when deployed
-    # "https://yourdomain.com",
-]
 
 # Add CORS middleware to the application
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # List of allowed origins
+    allow_origins=["*"],  # List of allowed origins
     allow_credentials=True,  # Allow cookies to be included in requests
     allow_methods=["*"],  # Allow all methods (GET, POST, PUT, DELETE, etc.)
     allow_headers=["*"],  # Allow all headers
