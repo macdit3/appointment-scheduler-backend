@@ -43,8 +43,8 @@ Thumbs.db
 *.log
 
 # Files to be excluded
-appointment_functions_test.py
-appointment_test.py
+appointments_functions_test.py
+appointments_test.py
 data-modeling-learnings.md
 data-tables.md
 database-design.md
