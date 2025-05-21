@@ -42,7 +42,7 @@ Thumbs.db
 # Logs
 *.log
 
-# File to excluded.
+# Files to be excluded
 appointment_functions_test.py
 appointment_test.py
 data-modeling-learnings.md
