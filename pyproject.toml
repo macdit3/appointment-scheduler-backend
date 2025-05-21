@@ -1,7 +1,7 @@
 [project]
 name = "appointment-scheduler-backend"
 version = "0.1.0"
-description = "Add your description here"
+description = "The appointment-scheduler-backend is a backend layer for the Small businesss appointment scheduler full-stack application."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

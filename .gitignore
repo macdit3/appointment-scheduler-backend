@@ -41,3 +41,17 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Files to be excluded
+appointment_functions_test.py
+appointment_test.py
+data-modeling-learnings.md
+data-tables.md
+database-design.md
+DDL_Script_mock_data2.sql
+mock-data-int.sql
+Prompt_Functions_generator.md
+sample_data.md
+supabase-setup.md
+test-api.http
+
